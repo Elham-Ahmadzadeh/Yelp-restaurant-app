@@ -9,11 +9,19 @@ CREATE TABLE restaurants (
   Location VARCHAR(50) NOT NULL,
   Price_range INT NOT NULL CHECK(Price_range >= 1 AND Price_range <= 5)
 );
+
 ALTER TABLE products ADD COLUMN featured BOOLEAN;
+
 ALTER TABLE products DROP COLUMN featured;
+
 DROP TABLE products;
 
+
 INSERT INTO restaurants (Name, Location , Price_range)
-VALUES ('Macdonald', 'New york', 3 );
+VALUES ('Macdonald', 'New york', 3 ) RETURNING *;
+
+UPDATE restaurants SET name = 'Lobster' ,location = 'Miami' ,price_range = 3 WHERE id = 2 RETURNING *;
+
+DELETE FROM restaurants WHERE id = $1;
 
 SELECT * FROM restaurants;
