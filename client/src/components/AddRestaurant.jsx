@@ -4,7 +4,7 @@ const AddRestaurant = () => {
   return (
     <div className="form-outline">
       <form action="">
-        <div className="input-group row">
+        <div className="input-group row bg-light bg-gradient">
           <div className="col">
             <input className="form-control" placeholder="name" />
           </div>
@@ -12,7 +12,7 @@ const AddRestaurant = () => {
             <input className="form-control" placeholder="location" />
           </div>
           <div className="col">
-            <select className="form-select">
+            <select className="form-control  my-1 mr-sm-2 custom-select">
               <option disabled>Price Range</option>
               <option value="1">$</option>
               <option value="2">$$</option>
@@ -22,10 +22,10 @@ const AddRestaurant = () => {
             </select>
           </div>
         </div>
-        <div className="mb-4"></div>
+        <div className="mb-5"></div>
         <div className="text-center">
           <button className="btn btn-primary btn-lg text-center">
-            Add Here
+            Add in Here
           </button>
         </div>
       </form>
