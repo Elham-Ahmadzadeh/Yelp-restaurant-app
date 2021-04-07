@@ -24,7 +24,9 @@ const AddRestaurant = () => {
         </div>
         <div className="mb-4"></div>
         <div className="text-center">
-          <button className="btn btn-primary btn-lg text-center">Add</button>
+          <button className="btn btn-primary btn-lg text-center">
+            Add Here
+          </button>
         </div>
       </form>
     </div>
