@@ -1,6 +1,37 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useContext } from 'react'
+import RestaurantFinder from '../apies/RestaurantFinder'
+import { RestaurantsContext } from '../context/RestaurantsContext'
 
-const RestaurantList = () => {
+const RestaurantList = (props) => {
+  //consume context to see api
+  const { restaurants, setRestaurants } = useContext(RestaurantsContext)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await RestaurantFinder.get('/')
+        setRestaurants(response.data.data.restaurant)
+      } catch (err) {}
+    }
+
+    fetchData()
+  }, [])
+
+  const handleDelete = async (e, id) => {
+    //to prevent the default bubbling  DOM behaviour
+    e.stopPropagation()
+    try {
+      await RestaurantFinder.delete(`/${id}`)
+      setRestaurants(
+        restaurants.filter((restaurant) => {
+          return restaurant.id !== id
+        })
+      )
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <div className="list-group text-center center table-responsive-sm">
       <div className="mb-5"></div>
@@ -16,42 +47,29 @@ const RestaurantList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Mcdonal</td>
-            <td>New york</td>
-            <td>$$</td>
-            <td>Rating</td>
-            <td>
-              <button className="btn btn-sm btn-warning">Update</button>
-            </td>
-            <td>
-              <button className="btn btn-sm  btn-danger">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Mcdonal</td>
-            <td>New york</td>
-            <td>$$</td>
-            <td>Rating</td>
-            <td>
-              <button className="btn btn-sm  btn-warning">Update</button>
-            </td>
-            <td>
-              <button className="btn btn-sm  btn-danger">Delete</button>
-            </td>
-          </tr>
-          <tr>
-            <td>Mcdonal</td>
-            <td>New york</td>
-            <td>$$</td>
-            <td>Rating</td>
-            <td>
-              <button className="btn btn-sm  btn-warning">Update</button>
-            </td>
-            <td>
-              <button className="btn btn-sm btn-danger">Delete</button>
-            </td>
-          </tr>
+          {/* if successfully fetched data */}
+          {restaurants &&
+            restaurants.map((el) => {
+              return (
+                <tr key={el.id}>
+                  <td>{el.name}</td>
+                  <td>{el.location}</td>
+                  <td>{'$'.repeat(el.price_range)}</td>
+                  <td>reviews</td>
+                  <td>
+                    <button className="btn btn-sm btn-warning">Update</button>
+                  </td>
+                  <td>
+                    <button
+                      onClick={(e) => handleDelete(e, el.id)}
+                      className="btn btn-sm  btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              )
+            })}
         </tbody>
       </table>
     </div>
