@@ -8,7 +8,7 @@ const AddRestaurant = () => {
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
   const [priceRange, setPriceRange] = useState('Price Range')
-
+  // post
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -18,8 +18,11 @@ const AddRestaurant = () => {
         location,
         price_range: priceRange,
       })
+      console.log(response.data.data)
       addRestaurantToTable(response.data.data.restaurant)
-    } catch (err) {}
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (

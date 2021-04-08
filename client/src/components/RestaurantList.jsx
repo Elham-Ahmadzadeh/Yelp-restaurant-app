@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React, { useEffect, useContext } from 'react'
 import RestaurantFinder from '../apies/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'

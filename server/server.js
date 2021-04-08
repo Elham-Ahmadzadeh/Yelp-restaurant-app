@@ -48,17 +48,17 @@ app.get('/api/v1/restaurants/:id', async (req, res) => {
 
 // CREATE A RESTAURANT
 app.post('/api/v1/restaurants', async (req, res) => {
-  //console.log(req.body)
+  console.log(req.body)
   try {
     const result = await db.query(
       'INSERT INTO restaurants (name, location, price_range) values ($1, $2, $3) returning *',
       [req.body.name, req.body.location, req.body.price_range]
     )
-   // console.log(result)
+    console.log(result)
     res.status(201).json({
       status: 'success',
       data: {
-        restaurant: restaurant.rows[0],
+        restaurant: result.rows[0],
       },
     })
   } catch (err) {
@@ -75,11 +75,11 @@ app.put('/api/v1/restaurants/:id', async (req, res) => {
       'UPDATE restaurants SET name = $1 ,location = $2 ,price_range = $3 WHERE id = $4 RETURNING *',
       [req.body.name, req.body.location, req.body.price_range, req.params.id]
     )
-   // console.log(result)
+    console.log(result)
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: {
-        restaurant: restaurant.rows[0],
+        restaurant: result.rows[0],
       },
     })
   } catch (err) {
