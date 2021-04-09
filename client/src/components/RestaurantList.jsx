@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from 'react'
 import RestaurantFinder from '../apies/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
-
+import { useHistory } from 'react-router-dom'
 const RestaurantList = (props) => {
   //consume context to see api
   const { restaurants, setRestaurants } = useContext(RestaurantsContext)
-
+  // represent history of browser
+  let history = useHistory()
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,6 +17,12 @@ const RestaurantList = (props) => {
 
     fetchData()
   }, [])
+
+  const handleUpdate = async (e, id) => {
+    e.stopPropagation()
+    // pushing url
+    history.push(`/restaurants/${id}/update`)
+  }
 
   const handleDelete = async (e, id) => {
     //to prevent the default bubbling  DOM behaviour
@@ -56,7 +63,12 @@ const RestaurantList = (props) => {
                   <td>{'$'.repeat(el.price_range)}</td>
                   <td>reviews</td>
                   <td>
-                    <button className="btn btn-sm btn-warning">Update</button>
+                    <button
+                      onClick={(e) => handleUpdate(e, el.id)}
+                      className="btn btn-sm btn-warning"
+                    >
+                      Update
+                    </button>
                   </td>
                   <td>
                     <button
