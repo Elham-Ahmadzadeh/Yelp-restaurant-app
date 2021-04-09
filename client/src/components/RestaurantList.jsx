@@ -12,7 +12,9 @@ const RestaurantList = (props) => {
       try {
         const response = await RestaurantFinder.get('/')
         setRestaurants(response.data.data.restaurant)
-      } catch (err) {}
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     fetchData()
@@ -22,6 +24,10 @@ const RestaurantList = (props) => {
     e.stopPropagation()
     // pushing url
     history.push(`/restaurants/${id}/update`)
+  }
+
+  const handleSelectRestaurant = (id) => {
+    history.push(`/restaurants/${id}`)
   }
 
   const handleDelete = async (e, id) => {
@@ -57,7 +63,7 @@ const RestaurantList = (props) => {
           {restaurants &&
             restaurants.map((el) => {
               return (
-                <tr key={el.id}>
+                <tr onClick={() => handleSelectRestaurant(el.id)} key={el.id}>
                   <td>{el.name}</td>
                   <td>{el.location}</td>
                   <td>{'$'.repeat(el.price_range)}</td>

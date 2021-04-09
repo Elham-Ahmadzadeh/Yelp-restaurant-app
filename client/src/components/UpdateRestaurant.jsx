@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import RestaurantFinder from '../apies/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
 const UpdateRestaurant = (props) => {
   // to have access to ID
   const { id } = useParams()
+  let history = useHistory()
   const { restaurants } = useContext(RestaurantsContext)
   const [name, setName] = useState('')
   const [location, setLocation] = useState('')
@@ -21,10 +22,17 @@ const UpdateRestaurant = (props) => {
     fetchData()
   }, [])
 
-  const handleSubmit = (id) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     try {
-      const response = RestaurantFinder.put(`/${id}`)
-      console.log(response)
+      await RestaurantFinder.put(`/${id}`, {
+        // the same as we wrote in body Insomnia
+        name,
+        location,
+        price_range: priceRange,
+      })
+
+      history.push('/')
     } catch (err) {
       console.log(err)
     }
