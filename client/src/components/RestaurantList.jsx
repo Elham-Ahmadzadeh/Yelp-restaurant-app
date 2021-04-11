@@ -2,6 +2,7 @@ import React, { useEffect, useContext } from 'react'
 import RestaurantFinder from '../apies/RestaurantFinder'
 import { RestaurantsContext } from '../context/RestaurantsContext'
 import { useHistory } from 'react-router-dom'
+import StarRating from './StarRating'
 const RestaurantList = (props) => {
   //consume context to see api
   const { restaurants, setRestaurants } = useContext(RestaurantsContext)
@@ -11,7 +12,7 @@ const RestaurantList = (props) => {
     const fetchData = async () => {
       try {
         const response = await RestaurantFinder.get('/')
-        setRestaurants(response.data.data.restaurant)
+        setRestaurants(response.data.data.restaurants)
       } catch (err) {
         console.log(err)
       }
@@ -28,6 +29,18 @@ const RestaurantList = (props) => {
 
   const handleSelectRestaurant = (id) => {
     history.push(`/restaurants/${id}`)
+  }
+
+  const renderRating = (el) => {
+    if (!el.count) {
+      return <span className="text-warning">0 reviews</span>
+    }
+    return (
+      <>
+        <StarRating rating={el.id} />
+        <span className="text-warning ml-1">({el.count})</span>
+      </>
+    )
   }
 
   const handleDelete = async (e, id) => {
@@ -67,7 +80,7 @@ const RestaurantList = (props) => {
                   <td>{el.name}</td>
                   <td>{el.location}</td>
                   <td>{'$'.repeat(el.price_range)}</td>
-                  <td>reviews</td>
+                  <td>{renderRating(el)}</td>
                   <td>
                     <button
                       onClick={(e) => handleUpdate(e, el.id)}

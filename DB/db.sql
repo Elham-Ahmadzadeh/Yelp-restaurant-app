@@ -37,6 +37,28 @@ CREATE TABLE reviews (
   review TEXT NOT NULL,
   rating INT NOT NULL CHECK(rating >= 1 AND rating <= 5)
 );
+
+
 -- restaurant_id is a foreign key komes back to id of restaurants table
 INSERT INTO reviews (restaurant_id, name, review, rating)
 VALUES (28, 'Reyhana', 'bad restaurant', 3);
+
+
+SELECT COUNT(*) AS counting-review FROM reviews WHERE restaurant_id = 2;
+SELECT TRUNC(AVG(rating), 2) AS Avg_Rating FROM reviews WHERE restaurant_id = 2;
+
+
+SELECT location, COUNT(location) FROM restaurants GROUP BY location;
+
+
+SELECT restaurant_id,  COUNT(restaurant_id) FROM reviews GROUP BY restaurant_id;
+
+
+-- to see all restaurants even those which dont have reviews
+SELECT * FROM restaurants  LEFT JOIN reviews ON restaurants.id = reviews.restaurant_id;
+
+
+--Aggregate func
+SELECT * FROM restaurants  LEFT JOIN (
+  SELECT restaurant_id,  COUNT(*), TRUNC(AVG(rating), 2) AS Average_Rating
+  FROM reviews GROUP BY restaurant_id)reviews ON restaurants.id = reviews.restaurant_id;

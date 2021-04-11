@@ -1,10 +1,32 @@
 import React, { useState } from 'react'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+import RestaurantFinder from '../apies/RestaurantFinder'
 
 const AddReview = () => {
+  // to have access to ID
+  const { id } = useParams()
+  const history = useHistory()
+  const location = useLocation()
   const [name, setName] = useState('')
-  const [rating, setRating] = useState('')
-  const [review, setReview] = useState('')
+  // we put rating to see rating in select
+  const [rating, setRating] = useState('Rating')
+  const [reviewText, setReviewText] = useState('')
 
+  const handleSubmitReview = async (e) => {
+    e.preventDefault()
+    try {
+      const addReview = await RestaurantFinder.post(`/${id}/addReview`, {
+        name,
+        rating,
+        review: reviewText,
+      })
+      console.log(addReview)
+      history.push('/')
+      history.push(location.pathname)
+    } catch (err) {
+      console.log(err)
+    }
+  }
   return (
     <div className="mb-2">
       <form action="">
@@ -41,11 +63,17 @@ const AddReview = () => {
           <textarea
             id="Review"
             className="form-control"
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
           ></textarea>
         </div>
-        <button className="btn btn-primary">Submit</button>
+        <button
+          type="submit"
+          onClick={handleSubmitReview}
+          className="btn btn-primary"
+        >
+          Submit
+        </button>
       </form>
     </div>
   )
